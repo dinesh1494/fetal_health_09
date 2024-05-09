@@ -126,7 +126,7 @@ def handle_prediction():
     print(len(data-predictions.sum()))
     
     
-    return jsonify(output)
+    return jsonify({'output': output}) 
 
 if __name__ == '__main__':
     app.run(debug=True)
