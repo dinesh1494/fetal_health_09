@@ -87,9 +87,9 @@ def preprocess_data(data):
     data['fetal_Health'] = data['fetal_Health'].map(category_mapping)
     return data
 
-# @app.route('/')
-# def home():
-#     return render_template('index.html')
+ @app.route('/')
+ def home():
+     return render_template('index.html')
 
 @app.route('/predict', methods=['POST'])
 def handle_prediction():
