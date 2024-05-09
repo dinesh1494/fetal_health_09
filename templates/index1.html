@@ -1,0 +1,231 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Model Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h2 {
+            color: #333;
+        }
+        #predictionOutput {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        #predictionOutput h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        #predictionOutput p {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Model Prediction</h2>
+    <input type="file" id="xlsFileInput">
+    <select id="modelSelect">
+        <option value="random_forest">Random Forest</option>
+        <option value="decision_tree">Decision Tree</option>
+        <option value="stacking_ensemble">Stacking Ensemble</option>
+        <option value="voting_ensemble">Voting Ensemble</option>
+        <option value="bagging_ensemble">Bagging Ensemble</option>
+        <option value="svm">Support Vector Machine (SVM)</option>
+    </select>
+    <button onclick="predict()">Predict</button>
+    <div id="predictionOutput"></div>
+
+    <script>
+        function predict() {
+            var xlsFileInput = document.getElementById('xlsFileInput');
+            var modelSelect = document.getElementById('modelSelect');
+
+            var formData = new FormData();
+            formData.append('model', modelSelect.value);
+            formData.append('xls_file', xlsFileInput.files[0]);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'https://your-flask-app.herokuapp.com/predict', true);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var output = JSON.parse(xhr.responseText);
+                    document.getElementById('predictionOutput').innerHTML = `
+                        <h3>Prediction Output</h3>
+                        <p>Model Name: ${output.model_name}</p>
+                        <p>Total Instances: ${output.total_instances}</p>
+                        <p>Correct Instances: ${output.correct_instances}</p>
+                        <p>Incorrect Instances: ${output.incorrect_instances}</p>
+                        <p>Training Percentage: ${output.training_percentage}</p>
+                    `;
+                } else {
+                    document.getElementById('predictionOutput').innerHTML = 'Error predicting with the selected model.';
+                }
+            };
+            xhr.send(formData);
+        }
+    </script>
+</body>
+</html> -->
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Model Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
+        h2 {
+            color: #333;
+            text-align: center;
+        }
+        input[type="file"] {
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+        }
+        button {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #predictionOutput {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        #predictionOutput h3 {
+            margin-top: 0;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        #predictionOutput p {
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Model Prediction</h2>
+        <input type="file" id="xlsFileInput">
+        <select id="modelSelect">
+            <option value="random_forest">Random Forest</option>
+            <option value="decision_tree">Decision Tree</option>
+            <option value="stacking_ensemble">Stacking Ensemble</option>
+            <option value="voting_ensemble">Voting Ensemble</option>
+            <option value="bagging_ensemble">Bagging Ensemble</option>
+            <option value="svm">Support Vector Machine (SVM)</option>
+        </select>
+        <button onclick="predict()">Predict</button>
+        <div id="predictionOutput"></div>
+        
+    </div>
+
+</body>
+</html>
+
+
+
+
+
+<script>
+    function predict() {
+        var xlsFileInput = document.getElementById('xlsFileInput');
+        var modelSelect = document.getElementById('modelSelect');
+
+        var formData = new FormData();
+        formData.append('model', modelSelect.value);
+        formData.append('xls_file', xlsFileInput.files[0]);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://127.0.0.1:5000/predict', true); // Adjust URL accordingly
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var output = JSON.parse(xhr.responseText);
+                document.getElementById('predictionOutput').innerHTML = `
+                    <h3>Prediction Output</h3>
+                    <p>Model Name: ${output.model_name}</p>
+                    <p>Total Instances: ${output.total_instances}</p>
+                    <p>Correct Instances: ${output.correct_instances}</p>
+                    <p>Incorrect Instances: ${output.incorrect_instances}</p>
+                    <p>Training Percentage: ${output.training_percentage}</p>
+                `;
+            } else {
+                document.getElementById('predictionOutput').innerHTML = 'Error predicting with the selected model.';
+            }
+        };
+        xhr.send(formData);
+    }
+</script>
+
+
+
+     <!-- <script>
+         function predict() {
+             var xlsFileInput = document.getElementById('xlsFileInput');
+             var modelSelect = document.getElementById('modelSelect');
+     
+             var formData = new FormData();
+             formData.append('model', modelSelect.value);
+             formData.append('xls_file', xlsFileInput.files[0]);
+     
+             var xhr = new XMLHttpRequest();
+             xhr.open('POST', 'https://your-flask-app.herokuapp.com/predict', true);
+             xhr.onload = function() {
+                 if (xhr.status === 200) {
+                     var output = JSON.parse(xhr.responseText);
+                     document.getElementById('predictionOutput').innerHTML = `
+                         <h3>Prediction Output</h3>
+                         <p>Model Name: ${output.model_name}</p>
+                         <p>Total Instances: ${output.total_instances}</p>
+                         <p>Correct Instances: ${output.correct_instances}</p>
+                         <p>Incorrect Instances: ${output.incorrect_instances}</p>
+                         <p>Training Percentage: ${output.training_percentage}</p>
+                     `;
+                 } else {
+                     document.getElementById('predictionOutput').innerHTML = 'Error predicting with the selected model.';
+                 }
+             };
+             xhr.send(formData);
+         }
+     </script> -->
