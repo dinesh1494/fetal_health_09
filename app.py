@@ -87,9 +87,9 @@ def preprocess_data(data):
     data['fetal_Health'] = data['fetal_Health'].map(category_mapping)
     return data
 
- @app.route('/')
- def home():
-     return render_template('index.html')
+@app.route('/')
+def home():
+    return render_template('index.html')
 
 @app.route('/predict', methods=['POST'])
 def handle_prediction():
@@ -112,22 +112,21 @@ def handle_prediction():
     correct_instances = sum(1 for true_label, prediction in zip(true_label, predictions) if true_label == prediction)
     
     # Example output, modify as needed
+    t_percentage=80
     output = {
         "model_name": model_name,
         "total_instances": len(data),
         "correct_instances": correct_instances,
         "incorrect_instances": len(data) - correct_instances,
-        "training_percentage": None  # Add training percentage calculation
+        "training_percentage": t_percentage  # Add training percentage calculation
     }
     output = {key: int(value) if isinstance(value, (int, np.int64)) else value for key, value in output.items()}
-    print(model_name)
-    print(len(data))
-    print(predictions.sum())
-    print(len(data-predictions.sum()))
     
-    
-    return jsonify({'output': output}) 
+    print(output)
+    #return jsonify(output)
+    return jsonify({'output': output})
+   
 
-#if __name__ == '__main__':
- #   app.run(debug=True)
-
+if __name__ == '__main__':
+    app.run(debug=True)
+ 
