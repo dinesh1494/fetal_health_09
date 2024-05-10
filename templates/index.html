@@ -18,8 +18,8 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             margin-top: 50px;
         }
-        h2 {
-            color: #333;
+        h1 {
+            
             text-align: center;
         }
         input[type="file"] {
@@ -40,7 +40,7 @@
         }
         button {
             width: 100%;
-            background-color: #4CAF50;
+            background-color: 	#4682B4;
             color: white;
             padding: 14px 20px;
             margin: 8px 0;
@@ -49,7 +49,7 @@
             cursor: pointer;
         }
         button:hover {
-            background-color: #45a049;
+            background-color: 	#4682B4;
         }
         #predictionOutput {
             margin-top: 20px;
@@ -66,21 +66,32 @@
             margin-bottom: 5px;
             font-size: 16px;
         }
+
+        #heading {
+        color: #4682B4; /* Blue color */
+    }
+
+    #predictButton {
+        font-weight: bold;
+        font-size: 18px; /* Adjust the size as needed */
+    }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Model Prediction</h2>
-        <input type="file" id="xlsFileInput">
-        <select id="modelSelect">
-            <option value="random_forest">Random Forest</option>
-            <option value="decision_tree">Decision Tree</option>
-            <option value="stacking_ensemble">Stacking Ensemble</option>
-            <option value="voting_ensemble">Voting Ensemble</option>
-            <option value="bagging_ensemble">Bagging Ensemble</option>
-            <option value="svm">Support Vector Machine (SVM)</option>
-        </select>
-        <button onclick="predict()">Predict</button>
+        <h1 id="heading">Build Model</h1>
+        <form id="user_input" action="/predict" method="POST" enctype="multipart/form-data"> <!-- Updated form -->
+            <input type="file" name="xls_file" id="xlsFileInput">
+            <select name="model" id="modelSelect"> <!-- Updated select element -->
+                <option value="random_forest">Random Forest</option>
+                <option value="decision_tree">Decision Tree</option>
+                <option value="stacking_ensemble">Stacking Ensemble</option>
+                <option value="voting_ensemble">Voting Ensemble</option>
+                <option value="bagging_ensemble">Bagging Ensemble</option>
+                <option value="svm">Support Vector Machine (SVM)</option>
+            </select>
+            <button type="submit" id="predictButton">Predict</button> <!-- Changed button type to submit -->
+        </form>
         <div id="predictionOutput">
             <h3>Prediction Output</h3>
             <p>Model Name: <span id="modelName"></span></p>
@@ -92,36 +103,26 @@
     </div>
 
     <script>
-        function predict() {
-            var fileInput = document.getElementById('xlsFileInput');
-            var modelSelect = document.getElementById('modelSelect');
-            var file = fileInput.files[0];
-            var modelName = modelSelect.options[modelSelect.selectedIndex].value;
-
-            // var formData = new FormData();
-            // formData.append('file', file);
-            // formData.append('model', modelName);
-            
-            
-            var formData = new FormData();
-            formData.append('model', modelSelect.value);
-            formData.append('xls_file', xlsFileInput.files[0]);
-
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'http://127.0.0.1:5000/predict', true);
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    var response = JSON.parse(xhr.responseText);
-                    var output = response.output;
-                    document.getElementById('modelName').innerText = output.model_name;
-                    document.getElementById('totalInstances').innerText = output.total_instances;
-                    document.getElementById('correctInstances').innerText = output.correct_instances;
-                    document.getElementById('incorrectInstances').innerText = output.incorrect_instances;
-                    document.getElementById('trainingPercentage').innerText = output.training_percentage;
-                }
-            };
-            xhr.send(formData);
-        }
+        document.getElementById('user_input').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var formData = new FormData(this);
+            fetch(this.action, {
+                method: this.method,
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('modelName').innerText = data.output.model_name;
+                document.getElementById('totalInstances').innerText = data.output.total_instances;
+                document.getElementById('correctInstances').innerText = data.output.correct_instances;
+                document.getElementById('incorrectInstances').innerText = data.output.incorrect_instances;
+                document.getElementById('trainingPercentage').innerText = data.output.training_percentage;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
     </script>
+    
 </body>
 </html>
